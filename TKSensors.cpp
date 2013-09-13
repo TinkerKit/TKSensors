@@ -168,40 +168,40 @@ void TKSensors::enableAll()
 byte TKSensors::analogTemp()
 {
 	if (analogTempStatus) {
-    analogTempValue = analogRead(analogTempPin);
-    return analogTempValue;
+    analogTempSaved = analogRead(analogTempPin);
+    return analogTempSaved;
 	} else return 0;
 }
 
 byte TKSensors::humidity()
 {
 	if (humidityStatus) {
-    humidityValue = analogRead(humidityPin);
-    return humidityValue;
+    humiditySaved = analogRead(humidityPin);
+    return humiditySaved;
 	} else return 0;
 }
 
 byte TKSensors::CO2()
 {
 	if (CO2Status) {
-    CO2Value = analogRead(CO2Pin);
-    return CO2Value;
+    CO2Saved = analogRead(CO2Pin);
+    return CO2Saved;
 	} else return 0;
 }
 
 byte TKSensors::brightness()
 {
 	if (brightnessStatus) {
-    brightnessValue = analogRead(brightnessPin);
-    return brightnessValue;
+    brightnessSaved = analogRead(brightnessPin);
+    return brightnessSaved;
 	} else return 0;
 }
 
 float TKSensors::digitalTemp(byte Tmode)
 {
     if (digitalTempStatus) {
-    digitalTempValue = MLX(Tmode);
-	return digitalTempValue;
+    digitalTempSaved = MLX(Tmode);
+	return digitalTempSaved;
 	} else return 0;
 }
 
@@ -244,18 +244,6 @@ float TKSensors::digitalTempAlt()
   
 }
 
-//Function which updates data
-void TKSensors::refreshData()
-{
-  digitalTempValue = digitalTemp(CELSIUS);
-  altitudeValue = altitude();
-  digitalTempAltValue = digitalTempAlt();
-  analogTempValue = analogTemp();
-  humidityValue =	humidity();
-  CO2Value = CO2();
-  brightnessValue = brightness();		
-}
-
 //set the file name of the output logfile
 void TKSensors::setFilename(const char* filename)
 {
@@ -267,28 +255,28 @@ byte TKSensors::logAll(){   //log all the active sensors
   outputFile = _sd->open(output_filename, FILE_WRITE);
   if (digitalTempStatus){
     outputFile.print("Temperature (analog) : ");
-    outputFile.println(digitalTempValue);
+    outputFile.println(digitalTempSaved);
 	
   }
   if (analogTempStatus){
     outputFile.print("Temperature (digital) : ");
-    outputFile.println(analogTempValue);
+    outputFile.println(analogTempSaved);
   }
   if (humidityStatus){
     outputFile.print("Humidity : ");
-    outputFile.println(humidityValue);
+    outputFile.println(humiditySaved);
   }
   if (altitudeStatus){
     outputFile.print("Altitude : ");
-    outputFile.println(altitudeValue);
+    outputFile.println(altitudeSaved);
   }
   if (CO2Status){
     outputFile.print("CO2 : ");
-    outputFile.println(CO2Value);
+    outputFile.println(CO2Saved);
   }
   if (brightnessStatus){
     outputFile.print("Brightness : ");
-    outputFile.println(brightnessValue);
+    outputFile.println(brightnessSaved);
   }
   outputFile.println("");
   outputFile.close();
@@ -300,7 +288,7 @@ byte TKSensors::logAll(){   //log all the active sensors
 byte TKSensors::logDigitalTemp(){
   outputFile = _sd->open(output_filename, FILE_WRITE);
   outputFile.print("Temperature (digital) : ");
-  outputFile.println(digitalTempValue);
+  outputFile.println(digitalTempSaved);
   outputFile.println("");
   outputFile.close();
 }
@@ -308,14 +296,14 @@ byte TKSensors::logDigitalTemp(){
 byte TKSensors::logAnalogTemp(){
   outputFile = _sd->open(output_filename, FILE_WRITE);
   outputFile.print("Temperature (analog) : ");
-  outputFile.println(analogTempValue);
+  outputFile.println(analogTempSaved);
   outputFile.println("");
   outputFile.close();
 }
 byte TKSensors::logHumidity(){
   outputFile = _sd->open(output_filename, FILE_WRITE);
   outputFile.print("Humidity : ");
-  outputFile.println(humidityValue);
+  outputFile.println(humiditySaved);
   outputFile.println("");
   outputFile.close();
 }
@@ -323,7 +311,7 @@ byte TKSensors::logHumidity(){
 byte TKSensors::logAltitude(){
   outputFile = _sd->open(output_filename, FILE_WRITE);
   outputFile.print("Altitude : ");
-  outputFile.println(altitudeValue);
+  outputFile.println(altitudeSaved);
   outputFile.println("");
   outputFile.close();
 }
@@ -331,7 +319,7 @@ byte TKSensors::logAltitude(){
 byte TKSensors::logCO2(){
   outputFile = _sd->open(output_filename, FILE_WRITE);
   outputFile.print("CO2 : ");
-  outputFile.println(CO2Value);
+  outputFile.println(CO2Saved);
   outputFile.println("");
   outputFile.close();
 }
@@ -339,7 +327,7 @@ byte TKSensors::logCO2(){
 byte TKSensors::logBrightness(){
   outputFile = _sd->open(output_filename, FILE_WRITE);
   outputFile.print("Brightness :");
-  outputFile.println(brightnessValue);
+  outputFile.println(brightnessSaved);
   outputFile.println("");
   outputFile.close();
 }
@@ -347,7 +335,7 @@ byte TKSensors::logBrightness(){
 byte TKSensors::logDigitalTempAlt(){
   outputFile = _sd->open(output_filename, FILE_WRITE);
   outputFile.print("Temperature (Alt.Sensor) : ");
-  outputFile.println(digitalTempValue); 
+  outputFile.println(digitalTempSaved); 
   outputFile.println("");
   outputFile.close();
 }

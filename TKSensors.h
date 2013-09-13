@@ -51,13 +51,13 @@ public:
  byte CO2Status;
  byte brightnessStatus;
  
- float digitalTempValue;
- byte analogTempValue;
- byte humidityValue;
- float altitudeValue;
- float digitalTempAltValue;
- byte CO2Value;
- byte brightnessValue;
+ float digitalTempSaved;
+ byte analogTempSaved;
+ byte humiditySaved;
+ float altitudeSaved;
+ float digitalTempAltSaved;
+ byte CO2Saved;
+ byte brightnessSaved;
 
 
  byte analogTempPin;
@@ -80,8 +80,6 @@ public:
  byte humidity();
  byte brightness();
  
- 
- void refreshData();
 
 //**enable/disable sensors
  void analogTempOn();

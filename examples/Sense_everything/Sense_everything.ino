@@ -1,20 +1,21 @@
 /*
 ThinkerKit Environmental Shield.
-
-Arturo Guadalupi <arturoguadalupi@gmail.com>
-Angelo Scialabba <scialabba.angelo@gmail.com>
-*/
+ 
+ Arturo Guadalupi <arturoguadalupi@gmail.com>
+ Angelo Scialabba <scialabba.angelo@gmail.com>
+ */
 /****************************************/
 
 #include <Wire.h> //Remember to include Wire.h and SD.h together with TKSensors.h
 #include <SD.h>
 #include <TKSensors.h>
+#include <SPI.h>
 
 TKSensors Envi = TKSensors();
 /*In order to save files on SD use a file name that have a max of 8 chars
-example "12345678.txt"
-
-Longer file name are not allowed, so if the sketch doesn't work check it twice*/
+ example "12345678.txt"
+ 
+ Longer file name are not allowed, so if the sketch doesn't work check it twice*/
 
 void setup()
 {
@@ -24,109 +25,128 @@ void setup()
 
 void loop()
 {
- /*If you don't have an Environmental Shield, but individual sensors,
- you can set pin of analog sesnsors using the functions:
- void setTempPin(byte pin);
- void setHumidityPin(byte pin);
- void setBrightnessPin(byte pin);
- void setCO2Pin(byte pin);
- */
- Serial.println("1 by 1");
- 
- Envi.analogTempOn(); //enable analog temperature sensor
- Serial.print("Temperature (analog) :  ");
- Serial.println (Envi.analogTemp());
- Envi.logAnalogTemp(); //save on SD;
- Envi.analogTempOff(); //disable analog temperature sensor
- 
- Envi.digitalTempOn(); //enable digital temperature sensor
- Serial.print("Temperature (digital) :  ");
- Serial.print (Envi.digitalTemp());
- Serial.println ("Celsius degrees");
- Serial.print("Temperature (digital) :  ");
- Envi.digitalTemp(FAHRENHEIT);
- Serial.print (Envi.digitalTemp());
- Serial.println ("Fahrenheit degrees");
- Envi.logDigitalTemp(); //save on SD;
- Envi.digitalTempOff(); //disable digital temperature sensor
- 
- //altitude also offering a temperature value
- Envi.altitudeOn(); //enable altitude sensor
- Serial.print("Altitude :  ");
- Serial.println (Envi.altitude());
- Envi.logAltitude(); //save on SD;
- Serial.print("Temperature (from altitude sensors) :  ");
- Serial.print(Envi.digitalTempAlt());
- Serial.println ("Celsius degrees");
- Envi.logDigitalTempAlt();
- Envi.altitudeOff(); //disable altitude sensor
+  /*If you don't have an Environmental Shield, but individual sensors,
+   you can set pin of analog sesnsors using the functions:
+   void setTempPin(byte pin);
+   void setHumidityPin(byte pin);
+   void setBrightnessPin(byte pin);
+   void setCO2Pin(byte pin);
+   */
 
- Envi.humidityOn(); //enable humidity sensor
- Serial.print ("Humidity :  ");
- Serial.println (Envi.humidity());
- Envi.logHumidity(); //save on SD;
- Envi.humidityOff(); //disable humidity sensor
- 
- Envi.CO2On(); //enable CO2 sensor
- Serial.print ("CO2 :  ");
- Serial.println (Envi.CO2());
- Envi.logCO2(); //save on SD;
- Envi.CO2Off(); //disable CO2 sensor
- 
- Envi.brightnessOn(); //enable brightness sensor
- Serial.print ("Brightness :  ");
- Serial.println (Envi.brightness());
- Envi.logBrightness(); //save on SD;
- Envi.brightnessOff(); //disable CO2 sensor
- 
- Serial.println(" ");
- Serial.println(" ");
- Serial.println(" ");
- 
- delay(3000);
- Serial.println("Enable all sensors");
- Envi.enableAll(); //enable all sensors on shield
- 
- Envi.refreshData(); //get new data from sensors;
- Serial.print("Temperature (analog) :  ");
- Serial.println (Envi.analogTempValue);
- Serial.print("Temperature (digital) :  ");
- Serial.print (Envi.digitalTempValue);
- Serial.println ("Celsius degrees");
- Serial.print("Altitude :  ");
- Serial.println (Envi.altitudeValue);
- Serial.print ("Humidity :  ");
- Serial.println (Envi.humidityValue);
- Serial.print ("CO2 :  ");
- Serial.println (Envi.CO2Value);
- Serial.print ("Brightness :  ");
- Serial.println (Envi.brightnessValue);
- Envi.logAll(); //save data from all sensors on SD
+  //Get and print sensor values individually
+  Serial.println("##########    One by One    ##########");
 
- Serial.println(" ");
- Serial.println(" ");
- Serial.println(" ");
- 
- delay(3000);
- Serial.println("Disable all sensors");
- Envi.disableAll(); //disable all sensors
- Envi.refreshData();
- Serial.print("Temperature (analog) :  ");
- Serial.println (Envi.analogTempValue);
- Serial.print("Temperature (digital) :  ");
- Serial.print (Envi.digitalTempValue);
- Serial.println ("Celsius degrees");
- Serial.print("Altitude :  ");
- Serial.println (Envi.altitudeValue);
- Serial.print ("Humidity :  ");
- Serial.println (Envi.humidityValue);
- Serial.print ("CO2 :  ");
- Serial.println (Envi.CO2Value);
- Serial.print ("Brightness :  ");
- Serial.println (Envi.brightnessValue);
- Serial.println(" ");
- Serial.println(" ");
- Serial.println(" ");
- 
- delay(3000);
+  //enable analog temperature sensor
+  Envi.analogTempOn(); 
+  //print 
+  Serial.print("Temperature (analog):\t");
+  Serial.println (Envi.analogTemp());
+  //save on SD;
+  Envi.logAnalogTemp(); 
+  //disable analog temperature sensor
+  Envi.analogTempOff(); 
+
+  //enable digital temperature sensor
+  Envi.digitalTempOn();
+  //print 
+  Serial.print("Temperature (digital):\t");
+  Serial.print (Envi.digitalTemp(CELSIUS));
+  Serial.println (" C");
+  Serial.print("Temperature (digital):\t");
+  Serial.print (Envi.digitalTemp(FAHRENHEIT));
+  Serial.println (" F");
+  //save on SD
+  Envi.logDigitalTemp(); 
+  //disable digital temperature sensor
+  Envi.digitalTempOff(); 
+
+  //enable altitude sensor
+  Envi.altitudeOn(); 
+  //print
+  Serial.print("Altitude:\t\t");
+  Serial.print (Envi.altitude());
+  Serial.println (" m");
+  //save on SD
+  Envi.logAltitude(); 
+  //altitude sensor can also read temperature
+  Serial.print("Temperature (altitude):\t");
+  Serial.print(Envi.digitalTempAlt());
+  Serial.println (" C");
+  //save on SD
+  Envi.logDigitalTempAlt();
+  //disable altitude sensor
+  Envi.altitudeOff(); 
+
+  //enable humidity sensor
+  Envi.humidityOn(); 
+  //print
+  Serial.print ("Humidity:\t\t");
+  Serial.println (Envi.humidity());
+  //save on SD
+  Envi.logHumidity(); 
+  //disable humidity sensor
+  Envi.humidityOff(); 
+
+  //enable CO2 sensor
+  Envi.CO2On(); 
+  //print
+  Serial.print ("CO2:\t\t\t");
+  Serial.println (Envi.CO2());
+  //save on SD
+  Envi.logCO2(); 
+  //disable CO2 sensor
+  Envi.CO2Off(); 
+
+  //enable brightness sensor
+  Envi.brightnessOn(); 
+  //print
+  Serial.print ("Brightness:\t\t");
+  Serial.println (Envi.brightness());
+  //save on SD
+  Envi.logBrightness(); 
+  //disable CO2 sensor
+  Envi.brightnessOff(); 
+
+  Serial.println();
+
+  delay(3000);
+
+  //if you need all the values, you can enable
+  //and disable all sensors with:
+  Envi.enableAll(); 
+  Serial.println("##########    All together    ##########");
+
+  //print values
+  Serial.print("Temperature (analog):\t");
+  Serial.println (Envi.analogTemp());
+  Serial.print("Temperature (digital):\t");
+  Serial.print (Envi.digitalTemp(CELSIUS));
+  Serial.println (" C");
+  Serial.print("Temperature (digital):\t");
+  Serial.print (Envi.digitalTemp(FAHRENHEIT));
+  Serial.println (" F");
+  Serial.print ("Altitude:\t\t");
+  Serial.print (Envi.altitude());
+  Serial.println (" m");
+  Serial.print("Temperature (altitude):\t");
+  Serial.print (Envi.digitalTempAlt());
+  Serial.println (" C");
+  Serial.print ("Humidity:\t\t");
+  Serial.println (Envi.humidity());
+  Serial.print ("CO2:\t\t\t");
+  Serial.println (Envi.CO2());
+  Serial.print ("Brightness:\t\t");
+  Serial.println (Envi.brightness());
+
+  //save data from all sensors on SD
+  Envi.logAll(); 
+
+  //disable all sensors
+  Envi.disableAll(); 
+
+  Serial.println();
+
+  delay(3000);
 }
+
+
