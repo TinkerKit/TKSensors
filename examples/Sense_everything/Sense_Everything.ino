@@ -20,7 +20,6 @@ void setup()
 {
   Envi.begin();
   Envi.setFilename("senslog.txt"); //create file on SD
- 
 }
 
 void loop()
