@@ -2,8 +2,8 @@
 TKSensors.cpp - High level class to read various TKSensors information
 
 @authors
-Arturo Guadalupi <arturoguadalupi@gmail.com>
-Angelo Scialabba <scialabba.angelo@gmail.com>
+Arturo Guadalupi <a.guadalupi@arduino.cc>
+Angelo Scialabba <a.scialabba@arduino.cc>
 
 May/14/2013
 
@@ -23,14 +23,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 MA 02110-1301, USA.
 */
 
-
 #include <TKSensors.h>
 
+extern byte humidityPin = A0;    	// sensore di umidità                            
+extern byte analogTempPin = A1;   	//Temperature sensor  
+extern byte brightnessPin = A2;    	//Light sensor                        
+extern byte CO2Pin = A3;    			//CO2 sensor  
 
-extern byte humidityPin = A0;    // sensore di umidità                            
-extern byte analogTempPin = A1;    // sensore di temperatura  
-extern byte brightnessPin = A2;    // sensore di luminosità                        
-extern byte CO2Pin = A3;    // sensore di Co2   
 extern byte digitalTempStatus;
 extern byte analogTempStatus;
 extern byte humidityStatus;
@@ -39,15 +38,11 @@ extern byte CO2Status;
 extern byte brightnessStatus;
 extern File outputFile;
 
-
-
 TKSensors::TKSensors()
 {
 _twi = &Wire;
 _sd = &SD;
-
 }
-
 
 void TKSensors::begin(){
 _twi->begin();
@@ -57,8 +52,7 @@ enableAll();
 }
 
 
-//Functions to set the analog pin to use for each sensor
-//if the user uses single sensor modules
+//Functions to set the analog pin to use for each sensor if the user uses single sensor modules
 
  void TKSensors::setAnalogTempPin(byte pin)
  {
@@ -80,7 +74,7 @@ void TKSensors::setHumidityPin(byte pin)
    brightnessPin = pin;
  }
  
-//Functions for enablig/disabling each sensor
+//Functions for enabling/disabling each sensor
 
 void TKSensors::analogTempOn()
 {
@@ -162,8 +156,7 @@ void TKSensors::enableAll()
   analogTempStatus = ON;
  }
 
-
-//Functions to read data from sensors
+//Functions to read data from each sensor
 
 byte TKSensors::analogTemp()
 {
@@ -245,6 +238,7 @@ float TKSensors::digitalTempAlt()
 }
 
 //set the file name of the output logfile
+
 void TKSensors::setFilename(const char* filename)
 {
   output_filename = filename;    
@@ -283,7 +277,7 @@ byte TKSensors::logAll(){   //log all the active sensors
   
 }
 
-//*** Function to log each sensor separately
+//*** Functions to log each sensor separately
 
 byte TKSensors::logDigitalTemp(){
   outputFile = _sd->open(output_filename, FILE_WRITE);
@@ -403,7 +397,6 @@ float TKSensors::MLX(byte wantsFahrenheit){  //reads temperature from  the digit
 
 boolean TKSensors::check_new()
 {
-
   if(twi_Read(0x12) == 0x80) // check INT_SOURCE register on
                              // new data ready (SRC_DRDY)
   {
@@ -414,7 +407,6 @@ boolean TKSensors::check_new()
 
 void TKSensors::sensor_config()
 {
-
   twi_Write(0x26, 0xB9);
   twi_Write(0x29, 0x80);
   twi_Write(0x13, 0x07);

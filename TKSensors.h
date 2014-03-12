@@ -4,8 +4,8 @@ High level library to read data from
 Tinkerkit! Environmental Shield's sensors.
 
 @authors
-Arturo Guadalupi <arturoguadalupi@gmail.com>
-Angelo Scialabba <scialabba.angelo@gmail.com>
+Arturo Guadalupi <a.guadalupi@arduino.cc>
+Angelo Scialabba <a.scialabba@arduino.cc>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -38,12 +38,12 @@ MA 02110-1301, USA.
 #define FAHRENHEIT 1
 #define CELSIUS 0
 
-
-
 class TKSensors{
 
 public:
+
 //**sensor data
+
  byte digitalTempStatus;
  byte analogTempStatus;
  byte humidityStatus;
@@ -59,19 +59,16 @@ public:
  byte CO2Saved;
  byte brightnessSaved;
 
-
  byte analogTempPin;
  byte humidityPin;  
  byte CO2Pin;
  byte brightnessPin;
  
- 
-
  TKSensors();
  void begin();
  
-
 //** function for reading sensor values
+
  byte analogTemp();
  float digitalTemp(byte Tmode);
  byte CO2();
@@ -79,9 +76,9 @@ public:
  float digitalTempAlt();
  byte humidity();
  byte brightness();
- 
 
 //**enable/disable sensors
+
  void analogTempOn();
  void analogTempOff();
 
@@ -114,8 +111,8 @@ public:
  byte logBrightness();
  byte logDigitalTempAlt();
  
-//set the sensor pin if the user 
-//uses sensor modules
+//set the sensor pin if the user uses sensor modules
+
  void setAnalogTempPin(byte pin);
  void setHumidityPin(byte pin);
  void setBrightnessPin(byte pin);
@@ -134,6 +131,5 @@ byte twi_Read(byte regAddr);
 void twi_Write(byte regAddr, byte value);
 void sensor_config();
 boolean check_new();
-
 };
 #endif 

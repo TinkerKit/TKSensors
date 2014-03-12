@@ -21,6 +21,8 @@ void setup()
 {
   Envi.begin();
   Envi.setFilename("senslog.txt"); //create file on SD
+  
+  Serial.begin(115200);//Serial start
 }
 
 void loop()
