@@ -29,10 +29,10 @@ void loop()
 {
   /*If you don't have an Environmental Shield, but individual sensors,
    you can set pin of analog sesnsors using the functions:
-   void setTempPin(byte pin);
-   void setHumidityPin(byte pin);
-   void setBrightnessPin(byte pin);
-   void setCO2Pin(byte pin);
+   void setTempPin(int pin);
+   void setHumidityPin(int pin);
+   void setBrightnessPin(int pin);
+   void setCO2Pin(int pin);
    */
 
   //Get and print sensor values individually
@@ -42,7 +42,8 @@ void loop()
   Envi.analogTempOn(); 
   //print 
   Serial.print("Temperature (analog):\t");
-  Serial.println (Envi.analogTemp());
+  Serial.print(Envi.analogTemp());
+  Serial.println(" C");
   //save on SD;
   Envi.logAnalogTemp(); 
   //disable analog temperature sensor
@@ -83,7 +84,8 @@ void loop()
   Envi.humidityOn(); 
   //print
   Serial.print ("Humidity:\t\t");
-  Serial.println (Envi.humidity());
+  Serial.print (Envi.humidity());
+  Serial.println("%");
   //save on SD
   Envi.logHumidity(); 
   //disable humidity sensor
@@ -120,21 +122,29 @@ void loop()
 
   //print values
   Serial.print("Temperature (analog):\t");
-  Serial.println (Envi.analogTemp());
+  Serial.print(Envi.analogTemp());
+  Serial.println("°C");
+  
   Serial.print("Temperature (digital):\t");
   Serial.print (Envi.digitalTemp(CELSIUS));
   Serial.println (" C");
+  
   Serial.print("Temperature (digital):\t");
   Serial.print (Envi.digitalTemp(FAHRENHEIT));
   Serial.println (" F");
+  
   Serial.print ("Altitude:\t\t");
   Serial.print (Envi.altitude());
   Serial.println (" m");
+  
   Serial.print("Temperature (altitude):\t");
   Serial.print (Envi.digitalTempAlt());
   Serial.println (" C");
+  
   Serial.print ("Humidity:\t\t");
-  Serial.println (Envi.humidity());
+  Serial.print (Envi.humidity());
+  Serial.println("%");
+  
   Serial.print ("CO2:\t\t\t");
   Serial.println (Envi.CO2());
   Serial.print ("Brightness:\t\t");
@@ -150,5 +160,3 @@ void loop()
 
   delay(3000);
 }
-
-
