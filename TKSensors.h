@@ -30,6 +30,7 @@ MA 02110-1301, USA.
 #include <Arduino.h>
 #include <Wire.h>
 #include <SD.h>
+#include <math.h>
 
 #define SENSORADDRESS  0x60
 #define ON 1
@@ -57,12 +58,12 @@ class TKSensors
 	byte brightnessStatus;
  
 	float digitalTempSaved;
-	int analogTempSaved;
-	int humiditySaved;
+	float analogTempSaved;
+	float humiditySaved;
 	float altitudeSaved;
 	float digitalTempAltSaved;
 	int CO2Saved;
-	int brightnessSaved;
+	float brightnessSaved;
 
 	int analogTempPin;
 	int humidityPin;  
@@ -80,7 +81,7 @@ class TKSensors
 	float altitude();
 	float digitalTempAlt();
 	float humidity();
-	int brightness();
+	float brightness();
 
 //**enable/disable sensors
 

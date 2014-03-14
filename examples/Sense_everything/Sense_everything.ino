@@ -95,7 +95,8 @@ void loop()
   Envi.CO2On(); 
   //print
   Serial.print ("CO2:\t\t\t");
-  Serial.println (Envi.CO2());
+  Serial.print (Envi.CO2());
+  Serial.println ( "ppm");
   //save on SD
   Envi.logCO2(); 
   //disable CO2 sensor
@@ -105,7 +106,8 @@ void loop()
   Envi.brightnessOn(); 
   //print
   Serial.print ("Brightness:\t\t");
-  Serial.println (Envi.brightness());
+  Serial.print(Envi.brightness());
+  Serial.println(" lux");
   //save on SD
   Envi.logBrightness(); 
   //disable CO2 sensor
@@ -123,7 +125,7 @@ void loop()
   //print values
   Serial.print("Temperature (analog):\t");
   Serial.print(Envi.analogTemp());
-  Serial.println("°C");
+  Serial.println(" C");
   
   Serial.print("Temperature (digital):\t");
   Serial.print (Envi.digitalTemp(CELSIUS));
@@ -146,9 +148,12 @@ void loop()
   Serial.println("%");
   
   Serial.print ("CO2:\t\t\t");
-  Serial.println (Envi.CO2());
+  Serial.print (Envi.CO2());
+  Serial.println (" ppm");
+  
   Serial.print ("Brightness:\t\t");
-  Serial.println (Envi.brightness());
+  Serial.print (Envi.brightness());
+  Serial.println(" lux");
 
   //save data from all sensors on SD
   Envi.logAll(); 

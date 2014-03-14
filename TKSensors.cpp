@@ -175,8 +175,8 @@ float TKSensors::analogTemp()
 {
 	if (analogTempStatus) 
 		{
-		analogTempSaved = analogRead(analogTempPin);
-		return float(((float(analogTempSaved)*VCC/N) - 1)/(2*analogTempSens));
+		analogTempSaved = float(((float(analogRead(analogTempPin))*VCC/N) - 1)/(2*analogTempSens));
+		return analogTempSaved;
 		} 
 	else 
 		return 0;
@@ -186,8 +186,8 @@ float TKSensors::humidity()
 {
 	if (humidityStatus) 
 		{
-		humiditySaved = analogRead(A0);
-		return float((float(humiditySaved)*VCC/N)*32-22);	//convert into %RH
+		humiditySaved = float((float(analogRead(humidityPin))*VCC/N)*32-22);	//convert into %RH
+		return humiditySaved;
 		} 
 	else
 		return 0;
@@ -197,18 +197,17 @@ int TKSensors::CO2()
 {
 	if (CO2Status) 
 		{
-		CO2Saved = analogRead(CO2Pin);
-		return CO2Saved;
+		return CO2Saved = analogRead(CO2Pin);
 		} 
 	else 
 		return 0;
 }
 
-int TKSensors::brightness()
+float TKSensors::brightness()
 {
 	if (brightnessStatus) 
 		{
-		brightnessSaved = analogRead(brightnessPin);
+		brightnessSaved = float(pow((float(analogRead(brightnessPin))*VCC/N)*1166.86, 0.68));
 		return brightnessSaved;
 		} 
 	else
@@ -366,7 +365,8 @@ byte TKSensors::logCO2()
 {
 	outputFile = _sd->open(output_filename, FILE_WRITE);
 	outputFile.print("CO2 : ");
-	outputFile.println(CO2Saved);
+	outputFile.print(map(CO2Saved,0,1023,350,10000));
+	outputFile.println(" ppm");
 	outputFile.println("");
 	outputFile.close();
 }
@@ -375,7 +375,8 @@ byte TKSensors::logBrightness()
 {
 	outputFile = _sd->open(output_filename, FILE_WRITE);
 	outputFile.print("Brightness :");
-	outputFile.println(brightnessSaved);
+	outputFile.print(brightnessSaved);
+	outputFile.println(" lux");
 	outputFile.println("");
 	outputFile.close();
 }
